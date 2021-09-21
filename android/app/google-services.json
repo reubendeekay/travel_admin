@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "12656423910",
+    "project_id": "itravel-ecbed",
+    "storage_bucket": "itravel-ecbed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12656423910:android:0b4f96b6c0a7a6bff45c27",
+        "android_client_info": {
+          "package_name": "com.example.travel_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12656423910-rvdnqmmkhg7coqgnf4ivf82kmtmcpq3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxbfpRGmq3Wjex1SfTXwySuxQaCiQZxUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12656423910-rvdnqmmkhg7coqgnf4ivf82kmtmcpq3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12656423910:android:b2c5c7b113eb616cf45c27",
+        "android_client_info": {
+          "package_name": "com.example.travel_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12656423910-rvdnqmmkhg7coqgnf4ivf82kmtmcpq3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxbfpRGmq3Wjex1SfTXwySuxQaCiQZxUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12656423910-rvdnqmmkhg7coqgnf4ivf82kmtmcpq3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
