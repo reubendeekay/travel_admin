@@ -38,7 +38,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:12656423910:android:b2c5c7b113eb616cf45c27",
         "android_client_info": {
-          "package_name": "com.example.travel_app"
+          "package_name": "com.example.travel_admin"
         }
       },
       "oauth_client": [

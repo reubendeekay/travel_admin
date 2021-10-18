@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class LoadingScreen extends StatelessWidget {
+  static const routeName = 'loading_screen';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

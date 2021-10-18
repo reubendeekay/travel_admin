@@ -1,17 +1,23 @@
+import 'dart:io';
+
 class PropertyModel {
   final String name;
   final String id;
-  final List<String> images;
-  final String coverImage;
+  final List<File> images;
+  final List<dynamic> imageUrls;
+  final File coverImage;
+  final String coverImageString;
   final String description;
   final String price;
   final PropertyLocation location;
-  final List<String> ammenities;
-  final String propertyOwner;
+  final List<dynamic> ammenities;
+  final String ownerName;
   final String ownerId;
-  final List<ReviewModel> reviews;
+  final List<dynamic> reviews;
   final List<Offer> offers;
   final String propertyCategory;
+  final double rating;
+  final int views;
 
   const PropertyModel({
     this.name,
@@ -22,11 +28,15 @@ class PropertyModel {
     this.price,
     this.location,
     this.ammenities,
-    this.propertyOwner,
+    this.ownerName,
     this.ownerId,
     this.reviews,
     this.offers,
     this.propertyCategory,
+    this.coverImageString,
+    this.imageUrls,
+    this.rating,
+    this.views,
   });
 }
 

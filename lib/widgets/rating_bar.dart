@@ -5,7 +5,8 @@ import 'package:travel_admin/constants.dart';
 class Ratings extends StatefulWidget {
   final double size;
   final bool isEdit;
-  Ratings({this.size, this.isEdit});
+  final double rating;
+  Ratings({this.size, this.isEdit, this.rating});
 
   @override
   _RatingsState createState() => _RatingsState();
@@ -18,7 +19,7 @@ class _RatingsState extends State<Ratings> {
     return Container(
       child: widget.isEdit == null
           ? RatingBar.readOnly(
-              initialRating: 4.5,
+              initialRating: widget.rating,
               isHalfAllowed: true,
               filledColor: Colors.amber,
               size: widget.size == null ? 14.0 : widget.size,

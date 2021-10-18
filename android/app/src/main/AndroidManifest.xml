@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.travel_admin">
    <application
-        android:label="travel_admin"
+        android:label="Travely Admin"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCEECT3Lkx_8crredHuI728tLDI5kWesjw"/>
