@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_admin/models/property_model.dart';
 import 'package:travel_admin/screens/manage_property/property_card.dart';
@@ -11,6 +12,7 @@ class AllProperty extends StatelessWidget {
             .collection('propertyData')
             .doc('propertyListing')
             .collection('properties')
+            .where('ownerId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.hasError || snapshot.data == null) {

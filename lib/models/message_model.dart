@@ -7,7 +7,7 @@ class MessageModel {
   final String receiverId;
   final Timestamp sentAt;
   final String message;
-  final List<dynamic> mediaUrl;
+  final String mediaUrl;
   final List<File> mediaFiles;
   final String mediaType;
   final bool isRead;

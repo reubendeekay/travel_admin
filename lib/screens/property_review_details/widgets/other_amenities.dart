@@ -28,28 +28,29 @@ class OtherAmenities extends StatelessWidget {
       ],
     );
   }
-}
 
-Widget amenity(String name) {
-  return Container(
-    margin: EdgeInsets.only(bottom: 10),
-    child: Row(
-      children: [
-        const CircleAvatar(
-            radius: 11,
-            backgroundColor: kPrimary,
-            child: Icon(
-              Icons.done,
-              size: 14,
-            )),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(name,
-            style: const TextStyle(
-              fontSize: 16,
-            )),
-      ],
-    ),
-  );
+  Widget amenity(String name) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      child: Row(
+        children: [
+          const CircleAvatar(
+              radius: 11,
+              backgroundColor: kPrimary,
+              child: Icon(
+                Icons.done,
+                size: 14,
+              )),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(name,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              )),
+        ],
+      ),
+    );
+  }
 }

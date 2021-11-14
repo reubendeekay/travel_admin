@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:travel_admin/models/service_model.dart';
+import 'package:travel_admin/models/view360_model.dart';
+
 class PropertyModel {
   final String name;
   final String id;
@@ -9,35 +12,40 @@ class PropertyModel {
   final String coverImageString;
   final String description;
   final String price;
+  final String rates;
   final PropertyLocation location;
   final List<dynamic> ammenities;
   final String ownerName;
   final String ownerId;
   final List<dynamic> reviews;
-  final List<Offer> offers;
+  final List<dynamic> offers;
   final String propertyCategory;
   final double rating;
   final int views;
+  final List<ServiceModel> services;
+  final List<View360Model> panoramicView;
 
-  const PropertyModel({
-    this.name,
-    this.id,
-    this.coverImage,
-    this.images,
-    this.description,
-    this.price,
-    this.location,
-    this.ammenities,
-    this.ownerName,
-    this.ownerId,
-    this.reviews,
-    this.offers,
-    this.propertyCategory,
-    this.coverImageString,
-    this.imageUrls,
-    this.rating,
-    this.views,
-  });
+  const PropertyModel(
+      {this.name,
+      this.id,
+      this.coverImage,
+      this.images,
+      this.description,
+      this.price,
+      this.location,
+      this.ammenities,
+      this.ownerName,
+      this.rates,
+      this.ownerId,
+      this.reviews,
+      this.offers,
+      this.propertyCategory,
+      this.coverImageString,
+      this.imageUrls,
+      this.rating,
+      this.views,
+      this.panoramicView,
+      this.services});
 }
 
 class PropertyLocation {

@@ -5,17 +5,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_app_bar/scroll_app_bar.dart';
 import 'package:travel_admin/constants.dart';
+import 'package:travel_admin/helpers/chat_tile_shimmer.dart';
 import 'package:travel_admin/providers/chat_provider.dart';
 import 'package:travel_admin/screens/chat/chat_screen_search.dart';
 import 'package:travel_admin/screens/chat/widgets/chat_tile.dart';
 
 class ChatScreen extends StatelessWidget {
+  static const routeName = '/chat-scre';
   final _controller = ScrollController();
   final uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final contacts = Provider.of<ChatProvider>(context).contactedUsers;
     Provider.of<ChatProvider>(context).getChats();
 
@@ -25,9 +26,11 @@ class ChatScreen extends StatelessWidget {
         toolbarHeight: 80,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Container(
+        leadingWidth: 100,
+        leading: Container(
           height: 70,
           alignment: Alignment.bottomLeft,
+          margin: EdgeInsets.only(left: 10),
           child: Text(
             'Chat',
             style: GoogleFonts.barlow(
@@ -69,6 +72,8 @@ class ChatScreen extends StatelessWidget {
                   chatModel: contacts[index],
                 ),
               ),
+              if (contacts.length < 1)
+                ...List.generate(10, (index) => ChatTileShimmer()),
             ],
           ),
         ),

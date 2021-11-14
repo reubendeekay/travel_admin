@@ -1,97 +1,156 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_admin/constants.dart';
 import 'package:travel_admin/models/property_model.dart';
-import 'package:travel_admin/providers/auth_provider.dart';
-import 'package:travel_admin/screens/property_details/widgets/details_description.dart';
-import 'package:travel_admin/screens/property_details/widgets/top_images.dart';
+import 'package:travel_admin/providers/location_provider.dart';
+import 'package:travel_admin/providers/property_provider.dart';
+import 'package:travel_admin/screens/auth/widgets/loading_screen.dart';
+import 'package:travel_admin/screens/property_review_details/widgets/details_description.dart';
 
-class PropertyDetailsScreen extends StatefulWidget {
-  static const routeName = '/property-details';
+import 'package:travel_admin/screens/property_review_details/widgets/top_images.dart';
+
+class PropertyReviewDetailsScreen extends StatefulWidget {
+  static const routeName = '/property-review-details';
 
   @override
-  _PropertyDetailsScreenState createState() => _PropertyDetailsScreenState();
+  _PropertyReviewDetailsScreenState createState() =>
+      _PropertyReviewDetailsScreenState();
 }
 
-class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
+class _PropertyReviewDetailsScreenState
+    extends State<PropertyReviewDetailsScreen> {
   bool isLiked = false;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final property = ModalRoute.of(context).settings.arguments as PropertyModel;
-    final user = Provider.of<AuthProvider>(context).user;
 
     return Scaffold(
       body: Container(
         height: size.height,
-        child: Stack(clipBehavior: Clip.none, children: [
-          SafeArea(
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverAppBar(
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Colors.transparent,
-                  expandedHeight: size.height * 0.4,
-                  floating: false,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Text('',
-                        style: TextStyle(fontSize: 15.0, shadows: [
-                          Shadow(
-                              color: Theme.of(context).primaryColor,
-                              blurRadius: 5)
-                        ])),
-                    background: TopImages(
-                        [property.coverImageString, ...property.imageUrls]),
+        child: isLoading
+            ? LoadingScreen()
+            : Stack(clipBehavior: Clip.none, children: [
+                SafeArea(
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverAppBar(
+                        elevation: 0,
+                        automaticallyImplyLeading: false,
+                        backgroundColor: Colors.transparent,
+                        expandedHeight: size.height * 0.4,
+                        floating: false,
+                        pinned: true,
+                        flexibleSpace: FlexibleSpaceBar(
+                          centerTitle: true,
+                          title: Text('',
+                              style: TextStyle(fontSize: 15.0, shadows: [
+                                Shadow(
+                                    color: Theme.of(context).primaryColor,
+                                    blurRadius: 5)
+                              ])),
+                          background: TopImages(
+                              [property.coverImage, ...property.images]),
+                        ),
+                      ),
+                      SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                              (context, i) => DetailsBody(property),
+                              childCount: 1))
+                    ],
                   ),
                 ),
-                SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                        (context, i) => DetailsBody(property),
-                        childCount: 1))
-              ],
-            ),
-          ),
-          SafeArea(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: kPrimary,
-                      ),
+                Positioned(
+                    bottom: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 5),
+                      width: size.width,
+                      color: Colors.white,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '\$ ${property.price}/${property.rates.toLowerCase()}',
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: kPrimary),
+                            ),
+                            Spacer(),
+                            RaisedButton(
+                              onPressed: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                Future.wait([
+                                  Provider.of<PropertyProvider>(context,
+                                          listen: false)
+                                      .sendProperty(property)
+                                ]).then((_) => setState(() {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      Provider.of<LocationProvider>(context,
+                                              listen: false)
+                                          .clearLocation();
+                                    }));
+                              },
+                              color: kPrimary,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 12),
+                                  child: isLoading
+                                      ? CircularProgressIndicator()
+                                      : const Text(
+                                          'Confirm & Post',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                            )
+                          ]),
+                    )),
+                SafeArea(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: const Icon(
+                              Icons.arrow_back,
+                              color: kPrimary,
+                            ),
+                          ),
+                        ),
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isLiked = !isLiked;
+                              });
+                            },
+                            child: Icon(
+                              isLiked ? Icons.favorite : Icons.favorite_border,
+                              color: kPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isLiked = !isLiked;
-                        });
-                      },
-                      child: Icon(
-                        isLiked ? Icons.favorite : Icons.favorite_border,
-                        color: kPrimary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ]),
+                )
+              ]),
       ),
     );
   }
@@ -111,6 +170,10 @@ class _DetailsBodyState extends State<DetailsBody> {
   Widget build(BuildContext context) {
     List screens = [
       DetailsDescription(widget.property),
+
+      // PropertyReviews(
+      //   property: widget.property,
+      // ),
     ];
     final size = MediaQuery.of(context).size;
     return Container(
@@ -120,10 +183,10 @@ class _DetailsBodyState extends State<DetailsBody> {
             topLeft: const Radius.circular(30),
             topRight: const Radius.circular(30),
           ),
-          // gradient: LinearGradient(
-          //     begin: Alignment.topCenter,
-          //     end: Alignment.bottomCenter,
-          //     colors: [Colors.white, Colors.grey[50]]),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.white, Colors.grey[50]]),
         ),
         width: size.width,
         child: Padding(
@@ -165,7 +228,7 @@ class _DetailsBodyState extends State<DetailsBody> {
                   size: 16,
                 ),
                 Text(
-                  '${widget.property.rating} Reviews',
+                  '4.3 Reviews',
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.grey,
@@ -332,26 +395,20 @@ class _DetailsBodyState extends State<DetailsBody> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.comment_outlined,
-                          size: 30,
-                          color:
-                              selectedOption == 1 ? kPrimary : Colors.grey[300],
-                        ),
-                        Text(
-                          'Reviews',
-                          style: TextStyle(
-                              color: selectedOption == 1
-                                  ? kPrimary
-                                  : Colors.grey[300],
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Icon(
+                        Icons.comment_outlined,
+                        size: 30,
+                        color: Colors.grey[300],
+                      ),
+                      Text(
+                        'Reviews',
+                        style: TextStyle(
+                            color: Colors.grey[300],
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                   Column(
                     children: [

@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -21,13 +18,36 @@ class PropertyProvider with ChangeNotifier {
         .id;
 
     List<String> imageUrls = [];
+    List<String> serviceUrls = [];
+    List<String> panoramas = [];
 
     final coverData = await FirebaseStorage.instance
         .ref('property/propertyData/$id/coverImage/')
         .putFile(property.coverImage);
     final coverUrl = await coverData.ref.getDownloadURL();
+    /////////////////////////////////////////////////////////////////
+    await Future.forEach(property.services, (element) async {
+      final serviceData = await FirebaseStorage.instance
+          .ref(
+              'property/propertyData/$id/services/${DateTime.now().toIso8601String()}/')
+          .putFile(element.image);
+      final url = await serviceData.ref.getDownloadURL();
+      serviceUrls.add(url);
+    });
+//////////////////////////////////////////////////////////////////
 
-    Future.forEach(property.images, (element) async {
+    if (property.panoramicView != null)
+      await Future.forEach(property.panoramicView, (element) async {
+        final panorama = await FirebaseStorage.instance
+            .ref(
+                'property/propertyData/$id/panorama/${DateTime.now().toIso8601String()}/')
+            .putFile(element.image);
+        final url = await panorama.ref.getDownloadURL();
+
+        panoramas.add(url);
+      });
+/////////////////////////////////////////////////////////////////
+    await Future.forEach(property.images, (element) async {
       final key = UniqueKey();
 
       final urlData = await FirebaseStorage.instance
@@ -35,31 +55,47 @@ class PropertyProvider with ChangeNotifier {
           .putFile(element);
       final url = await urlData.ref.getDownloadURL();
       imageUrls.add(url);
-    }).then(
-      (_) => FirebaseFirestore.instance
-          .collection('propertyData')
-          .doc('propertyListing')
-          .collection('properties')
-          .doc(id)
-          .set({
-        'id': id,
-        'description': property.description,
-        'images': imageUrls,
-        'name': property.name,
-        'price': property.price,
-        'propertyCategory': property.propertyCategory,
-        'ownerId': property.ownerId,
-        'rating': 0,
-        'views': 0,
-        'coverImage': coverUrl,
-        'offers': [],
-        'reviews': [],
-        'ownerName': property.ownerName,
-        'location': property.location.toJson(),
-        'ammenities': property.ammenities,
-        'createdAt': Timestamp.now(),
-      }),
-    );
+    }).then((_) => FirebaseFirestore.instance
+            .collection('propertyData')
+            .doc('propertyListing')
+            .collection('properties')
+            .doc(id)
+            .set({
+          'id': id,
+          'description': property.description,
+          'images': imageUrls,
+          'name': property.name,
+          'price': property.price,
+          'propertyCategory': property.propertyCategory,
+          'rates': property.rates.toLowerCase(),
+          'ownerId': property.ownerId,
+          'rating': 0,
+          'views': 0,
+          'coverImage': coverUrl,
+          'offers': [],
+          'reviews': [],
+          'ownerName': property.ownerName,
+          'location': property.location.toJson(),
+          'ammenities': property.ammenities,
+          'createdAt': Timestamp.now(),
+          'view360': List.generate(
+              property.panoramicView.length,
+              (i) => {
+                    'hotspots': property.panoramicView[i].hotspots,
+                    'id': DateTime.now().toIso8601String(),
+                    'image': panoramas[i],
+                    'name': property.panoramicView[i].name,
+                  }),
+          'services': List.generate(
+              property.services.length,
+              (index) => {
+                    'category': property.propertyCategory,
+                    'name': null,
+                    'price': property.services[index].price,
+                    'status': 'Available',
+                    'imageUrl': serviceUrls[index]
+                  })
+        }));
     print('Property sent');
 
     notifyListeners();

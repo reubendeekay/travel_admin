@@ -1,11 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:travel_admin/constants.dart';
-import 'package:travel_admin/screens/property_details/widgets/details_fullscreen.dart';
-import 'package:travel_admin/widgets/cached_image.dart';
+import 'package:travel_admin/screens/property_review_details/widgets/details_fullscreen.dart';
 
 class TopImages extends StatefulWidget {
-  final List<String> images;
+  final List<File> images;
 
   TopImages(this.images);
   @override
@@ -29,7 +30,7 @@ class _TopImagesState extends State<TopImages> {
               child: Container(
                 width: size.width,
                 height: size.height * 0.4,
-                child: cachedImage(
+                child: Image.file(
                   item,
                   width: double.infinity,
                   fit: BoxFit.cover,

@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:travel_admin/screens/property_details/widgets/details_fullscreen.dart';
-import 'package:travel_admin/widgets/cached_image.dart';
+import 'package:travel_admin/screens/property_review_details/widgets/details_fullscreen.dart';
 
 class DetailsPhotos extends StatelessWidget {
-  List<String> images;
+  List<File> images;
   DetailsPhotos(this.images);
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class DetailsPhotos extends StatelessWidget {
     );
   }
 
-  Widget photos(String asset, BuildContext context) {
+  Widget photos(File asset, BuildContext context) {
     return Container(
       height: 150,
       width: 120,
@@ -48,7 +49,7 @@ class DetailsPhotos extends StatelessWidget {
           child: Hero(
             tag: asset,
             transitionOnUserGestures: true,
-            child: cachedImage(
+            child: Image.file(
               asset,
               fit: BoxFit.cover,
             ),

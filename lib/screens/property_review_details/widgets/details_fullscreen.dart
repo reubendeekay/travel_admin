@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:travel_admin/widgets/cached_image.dart';
 
 class DetailsFullScreen extends StatelessWidget {
   static const routeName = '/details-fullscreen';
@@ -13,7 +12,7 @@ class DetailsFullScreen extends StatelessWidget {
       child: Hero(
         tag: image,
         transitionOnUserGestures: true,
-        child: cachedImage(
+        child: Image.file(
           image,
           fit: BoxFit.fitWidth,
         ),

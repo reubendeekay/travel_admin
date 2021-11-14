@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:travel_admin/screens/property_details/property_details_screen.dart';
 import 'package:travel_admin/widgets/cached_image.dart';
 import 'package:travel_admin/constants.dart';
 import 'package:travel_admin/helpers/country_helpers.dart';
 import 'package:travel_admin/models/property_model.dart';
-import 'package:travel_admin/screens/property_details/property_details_screen.dart';
 import 'package:travel_admin/widgets/rating_bar.dart';
 
 class PropertyCard extends StatelessWidget {
@@ -28,7 +28,7 @@ class PropertyCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(right: 10),
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                       child: cachedImage(property.coverImageString,
                           fit: BoxFit.cover)),
                   width: size.width * 0.3,

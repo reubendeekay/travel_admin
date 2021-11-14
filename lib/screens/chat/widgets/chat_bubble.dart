@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:travel_admin/widgets/cached_image.dart';
 import 'package:travel_admin/models/message_model.dart';
 import 'dart:ui' as ui;
 
@@ -9,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:travel_admin/screens/property_details/widgets/details_fullscreen.dart';
+import 'package:travel_admin/widgets/cached_image.dart';
 
 class ChatBubble extends StatelessWidget {
   final MessageModel message;
@@ -79,48 +79,44 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
         if (message.mediaUrl.isNotEmpty)
-          ...List.generate(
-              message.mediaUrl.length,
-              (index) => GestureDetector(
-                    onTap: () => Navigator.of(context).pushNamed(
-                        DetailsFullScreen.routeName,
-                        arguments: message.mediaUrl[index]),
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 7.5, horizontal: 10),
-                      constraints: BoxConstraints(
-                        maxWidth: size.width * 0.6,
-                        maxHeight: size.height * 0.5,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Stack(
-                          children: [
-                            cachedImage(
-                              message.mediaUrl[index],
-                            ),
-                            Positioned(
-                              bottom: 5,
-                              right: 8,
-                              child: Text(
-                                  DateFormat('HH:mm')
-                                      .format(message.sentAt.toDate()),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    shadows: [
-                                      Shadow(
-                                        color: Colors.grey[500],
-                                        blurRadius: 2,
-                                      )
-                                    ],
-                                    fontSize: 12,
-                                  )),
-                            )
-                          ],
-                        ),
-                      ),
+          GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed(
+                DetailsFullScreen.routeName,
+                arguments: message.mediaUrl),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 7.5, horizontal: 10),
+              constraints: BoxConstraints(
+                maxWidth: size.width * 0.6,
+                maxHeight: size.height * 0.5,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Stack(
+                  children: [
+                    cachedImage(
+                      message.mediaUrl,
                     ),
-                  ))
+                    Positioned(
+                      bottom: 5,
+                      right: 8,
+                      child: Text(
+                          DateFormat('HH:mm').format(message.sentAt.toDate()),
+                          style: TextStyle(
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                color: Colors.grey[500],
+                                blurRadius: 2,
+                              )
+                            ],
+                            fontSize: 12,
+                          )),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }

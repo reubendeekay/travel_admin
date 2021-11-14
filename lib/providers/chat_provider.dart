@@ -29,16 +29,14 @@ class ChatProvider with ChangeNotifier {
   /////////////////SEND MESSAGE////////////////////////
   Future<void> sendMessage(String userId, MessageModel message) async {
     final uid = FirebaseAuth.instance.currentUser.uid;
-    List<String> urls = [];
-    String mediaType = 'image';
+    String url = '';
 
     if (message.mediaFiles.isNotEmpty) {
       await Future.forEach(message.mediaFiles, (element) async {
         final fileData = await FirebaseStorage.instance
             .ref('chatFiles/$uid/${DateTime.now().toIso8601String()}')
             .putFile(element);
-        final url = await fileData.ref.getDownloadURL();
-        urls.add(url);
+        url = await fileData.ref.getDownloadURL();
       }).then((_) async {
         final initiator = FirebaseFirestore.instance
             .collection('chats')
@@ -59,8 +57,8 @@ class ChatProvider with ChangeNotifier {
                   initiator.collection('messages').doc().set({
                     'message': message.message != null ? message.message : '',
                     'sender': uid,
-                    'media': urls,
-                    'mediaType': mediaType,
+                    'media': url,
+                    'mediaType': message.mediaType,
                     'isRead': false,
                     'sentAt': Timestamp.now()
                   })
@@ -82,8 +80,8 @@ class ChatProvider with ChangeNotifier {
                                   ? message.message
                                   : '',
                               'sender': uid,
-                              'media': urls,
-                              'mediaType': mediaType,
+                              'media': url,
+                              'mediaType': message.mediaType,
                               'isRead': false,
                               'sentAt': Timestamp.now()
                             })
@@ -105,8 +103,8 @@ class ChatProvider with ChangeNotifier {
                                   ? message.message
                                   : '',
                               'sender': uid,
-                              'media': urls,
-                              'mediaType': mediaType,
+                              'media': url,
+                              'mediaType': message.mediaType,
                               'isRead': false,
                               'sentAt': Timestamp.now()
                             }),
@@ -135,8 +133,8 @@ class ChatProvider with ChangeNotifier {
                 initiator.collection('messages').doc().set({
                   'message': message.message != null ? message.message : '',
                   'sender': uid,
-                  'media': urls.isNotEmpty ? urls : [],
-                  'mediaType': mediaType,
+                  'media': url,
+                  'mediaType': message.mediaType,
                   'isRead': false,
                   'sentAt': Timestamp.now()
                 })
@@ -157,10 +155,8 @@ class ChatProvider with ChangeNotifier {
                             'message':
                                 message.message != null ? message.message : '',
                             'sender': uid,
-                            'media': message.mediaUrl != null
-                                ? message.mediaUrl
-                                : [],
-                            'mediaType': mediaType,
+                            'media': url,
+                            'mediaType': message.mediaType,
                             'isRead': false,
                             'sentAt': Timestamp.now()
                           })
@@ -180,8 +176,8 @@ class ChatProvider with ChangeNotifier {
                             'message':
                                 message.message != null ? message.message : '',
                             'sender': uid,
-                            'media': urls.isNotEmpty ? urls : [],
-                            'mediaType': mediaType,
+                            'media': url,
+                            'mediaType': message.mediaType,
                             'isRead': false,
                             'sentAt': Timestamp.now()
                           }),

@@ -66,6 +66,8 @@ class _AddMessageState extends State<AddMessage> {
                 Provider.of<ChatProvider>(context, listen: false).sendMessage(
                     widget.userId,
                     MessageModel(
+                      mediaFiles: [],
+                      mediaType: '',
                       message: messageController.text,
                       senderId: FirebaseAuth.instance.currentUser.uid,
                       receiverId: widget.userId,
@@ -130,15 +132,20 @@ class _AddMessageState extends State<AddMessage> {
                 (1024 * 1024);
 
         if (mediaSize < 1.0001) {
-          Provider.of<ChatProvider>(context, listen: false).sendMessage(
+          mediaList.forEach(
+            (element) =>
+                Provider.of<ChatProvider>(context, listen: false).sendMessage(
               widget.userId,
               MessageModel(
                 message: '',
-                mediaFiles: mediaList.map((e) => e.file).toList(),
-                mediaType: 'image',
+                mediaFiles: [element.file],
+                mediaType:
+                    element.mediaType == MediaType.image ? 'image' : 'video',
                 senderId: FirebaseAuth.instance.currentUser.uid,
                 receiverId: widget.userId,
-              ));
+              ),
+            ),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Image should be less than 1 MB')));

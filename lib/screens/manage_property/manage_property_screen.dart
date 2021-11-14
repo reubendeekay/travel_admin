@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:travel_admin/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:travel_admin/providers/location_provider.dart';
 import 'package:travel_admin/screens/add_property/add_property.dart';
-import 'package:travel_admin/screens/home/widgets/home_top.dart';
+import 'package:travel_admin/screens/manage_property/analytics_screen.dart';
 import 'package:travel_admin/screens/manage_property/properties.dart';
 
 class ManagePropertyScreen extends StatelessWidget {
   static const routeName = '/manage-property';
   @override
   Widget build(BuildContext context) {
+    Provider.of<LocationProvider>(context, listen: false).getCurrentLocation();
+
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -46,12 +48,12 @@ class ManagePropertyScreen extends StatelessWidget {
                   color: Colors.blue,
                   icon: Icons.graphic_eq,
                   title: 'Analytics',
-                  routeName: AddPropertyScreen.routeName,
+                  routeName: AnalyticsScreen.routeName,
                 ),
                 ManagePropertyOption(
                   color: Colors.red,
                   icon: Icons.add,
-                  title: 'Add Property',
+                  title: 'More',
                   routeName: AddPropertyScreen.routeName,
                 ),
               ],

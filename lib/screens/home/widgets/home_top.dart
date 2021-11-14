@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_admin/constants.dart';
 import 'package:travel_admin/providers/auth_provider.dart';
+import 'package:travel_admin/screens/chat/chat_screen.dart';
+import 'package:travel_admin/screens/chat/chat_screen_search.dart';
 import 'package:travel_admin/screens/manage_property/manage_property_screen.dart';
+import 'package:travel_admin/screens/media/add_ad.dart';
 
 class HomeTop extends StatelessWidget {
   @override
@@ -37,9 +41,14 @@ class HomeTop extends StatelessWidget {
                     ),
                     onPressed: () {},
                   ),
-                  Icon(
-                    Icons.call_made_outlined,
-                    color: Colors.grey[800],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(ChatScreen.routeName);
+                    },
+                    child: Icon(
+                      FontAwesomeIcons.paperPlane,
+                      color: Colors.grey[800],
+                    ),
                   ),
                 ],
               ),
@@ -77,6 +86,7 @@ class HomeTop extends StatelessWidget {
                   color: Colors.blue,
                   icon: Icons.near_me,
                   title: 'Media',
+                  routeName: AddAdScreen.routeName,
                 ),
                 HomeTopOption(
                   color: Colors.red,

@@ -36,9 +36,9 @@ class LocationProvider with ChangeNotifier {
     }
 
     _locationData = await location.getLocation();
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      _locationData = currentLocation;
-    });
+    // location.onLocationChanged.listen((LocationData currentLocation) {
+    //   _locationData = currentLocation;
+    // });
 
     notifyListeners();
   }

@@ -1,13 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:travel_admin/constants.dart';
 import 'package:travel_admin/models/message_model.dart';
 import 'package:travel_admin/models/user_model.dart';
 import 'package:travel_admin/screens/chat/add_message.dart';
 import 'package:travel_admin/screens/chat/widgets/chat_bubble.dart';
-import 'package:travel_admin/screens/chat/widgets/chat_tile.dart';
 
 class ChatRoom extends StatelessWidget {
   static const routeName = '/chat-room';
@@ -54,9 +51,7 @@ class ChatRoom extends StatelessWidget {
                 child: Text(
                   user.fullName,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             )
